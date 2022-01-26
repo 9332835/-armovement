@@ -1,4 +1,30 @@
 ﻿@page
 @model Сarmovement.Pages.AddnewcarModel
+
 @{
+    ViewData["Title"] = "Addnewcar";
+
+    var result = "";
+    Array userData = null;
+    char[] delimiterChar = { ',' };
+
+    var dataFile = @"C:/Users/User/Desktop/Sample.txt";
+
+    if (System.IO.File.Exists(dataFile))
+    {
+        userData = System.IO.File.ReadAllLines(dataFile);
+
+        if (userData == null)
+        {
+            // Empty file.
+            result = "The file is empty.";
+        }
+    }
+    else
+    {
+        // File does not exist.
+        result = "The file does not exist.";
+    }
+
+  
 }
