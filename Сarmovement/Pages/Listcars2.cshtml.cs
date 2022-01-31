@@ -23,6 +23,7 @@ namespace Сarmovement.Pages
         public async Task OnGetAsync()
         {
             Car = await _context.Cars.ToListAsync();
+
         }
     }
 }

@@ -3,3 +3,85 @@
 @{
     ViewData["Title"] = "Main page";
 }
+івдлповлд
+@section links
+{
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+}
+@section JavaScript
+{
+    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+}
+
+
+<div id="map" style="width: 1200px; height: 720px"></div>
+
+<script>
+    function configuremap(data) {
+        // Creating map options (устанавливает опции карты map : вид на заданное место и масштаб)
+        var mapOptions = {
+            //center: [45.698175, 28.6018244],
+             center: [data[0].latitude, data[0].longitude],
+            zoom: 15,
+            attributionControl: false
+        }
+        // Creating a map object (создает новый объект карта map)
+        var map = new L.map('map', mapOptions);
+
+        // Creating a Layer object (создает новый слой объекта)
+        //var layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+
+        var layer = new L.tileLayer(
+            'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+        // устанавливает маркер на карту
+        // L.marker([45.698175, 28.6018244], {
+        L.marker([data[0].latitude, data[0].longitude], {
+            clickable: false,
+            icon: new L.Icon({
+                iconUrl: 'C:/Users/User/Desktop/car.png',
+                iconSize: [20, 20], iconAnchor: [15, 20]
+            })
+        }).addTo(map);
+
+
+        L.Routing.control({
+            waypoints: [
+                L.latLng(45.698175, 28.6018244),
+                L.latLng(45.7140116, 28.6039066),
+                L.latLng(45.6986399, 28.60301),
+                L.latLng(45.701595, 28.6034566),
+                L.latLng(45.7072783, 28.6036433),
+                L.latLng(45.7140116, 28.6039066),
+                L.latLng(45.7200716, 28.6069366)
+            ]
+
+        }).addTo(map);
+
+        // Adding layer to the map ( добавляет слой на карту)
+        map.addLayer(layer);
+
+        // Attribution options
+        var attrOptions = {
+            prefix: 'BH 36-84 ЕC'
+        };
+
+        // Creating an attribution
+        var attr = L.control.attribution(attrOptions);
+        attr.addTo(map);  // Adding attribution to the map
+    }
+</script>
+
+<script>
+
+    //var response1;
+    function getItems() {
+        fetch("api/cars")
+            .then(response => response.json())
+            .then(data => { configuremap(data); })
+            .catch(error => console.error('Unable to get items.', error));
+
+    }
+    getItems();
+</script>
