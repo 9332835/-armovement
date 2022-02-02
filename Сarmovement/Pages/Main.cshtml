@@ -8,11 +8,13 @@
 {
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+   
 }
 @section JavaScript
 {
     <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+    <script src="https://kit.fontawesome.com/ea7f1ab7cf.js" crossorigin="anonymous"></script>
 }
 
 
@@ -23,7 +25,7 @@
         // Creating map options (устанавливает опции карты map : вид на заданное место и масштаб)
         var mapOptions = {
             //center: [45.698175, 28.6018244],
-             center: [data[0].latitude, data[0].longitude],
+            center: [data[0].latitude, data[0].longitude],
             zoom: 15,
             attributionControl: false
         }
@@ -35,28 +37,51 @@
 
         var layer = new L.tileLayer(
             'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+
+        const fontAwesomeIcon = L.divIcon({
+            html: '<i class="fas fa-car"></i>',
+            iconSize: [20, 20],
+            className: 'myDivIcon'
+        });
+
         // устанавливает маркер на карту
         // L.marker([45.698175, 28.6018244], {
+
+        //L.marker([data[0].latitude, data[0].longitude], {
+        //    clickable: false,
+        //    icon: new L.Icon({
+        //        iconUrl: 'C:/Users/User/Desktop/car.png',
+        //        iconSize: [20, 20], iconAnchor: [15, 20]
+        //    }) 
         L.marker([data[0].latitude, data[0].longitude], {
             clickable: false,
-            icon: new L.Icon({
-                iconUrl: 'C:/Users/User/Desktop/car.png',
-                iconSize: [20, 20], iconAnchor: [15, 20]
-            })
+            icon: fontAwesomeIcon
+
         }).addTo(map);
 
+      
+        for (var i = 0; i < data.length; i++) 
+            marker = new L.marker([data[i].latitude, data[i].longitude])
+        .addTo(map);
 
+
+        //L.Routing.control({
+        //    waypoints: [
+        //        L.latLng(45.698175, 28.6018244),
+        //        L.latLng(45.7140116, 28.6039066),
+        //        L.latLng(45.6986399, 28.60301),
+        //        L.latLng(45.701595, 28.6034566),
+        //        L.latLng(45.7072783, 28.6036433),
+        //        L.latLng(45.7140116, 28.6039066),
+        //        L.latLng(45.7200716, 28.6069366)
+        //    ]
+
+        for (var i = 0; i < data.length - 1; i++)
         L.Routing.control({
             waypoints: [
-                L.latLng(45.698175, 28.6018244),
-                L.latLng(45.7140116, 28.6039066),
-                L.latLng(45.6986399, 28.60301),
-                L.latLng(45.701595, 28.6034566),
-                L.latLng(45.7072783, 28.6036433),
-                L.latLng(45.7140116, 28.6039066),
-                L.latLng(45.7200716, 28.6069366)
-            ]
-
+                L.latLng(data[i].latitude, data[i].longitude),
+                L.latLng(data[i+1].latitude, data[i+1].longitude)
+                ]
         }).addTo(map);
 
         // Adding layer to the map ( добавляет слой на карту)
@@ -64,7 +89,8 @@
 
         // Attribution options
         var attrOptions = {
-            prefix: 'BH 36-84 ЕC'
+            prefix: [data[0].number]
+            //prefix: 'BH 36-84 ЕC'
         };
 
         // Creating an attribution
