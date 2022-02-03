@@ -1,0 +1,106 @@
+﻿@page
+@model Сarmovement.Pages.TryModel
+@{
+    ViewData["Title"] = "Main page";
+}
+<!DOCTYPE html>
+
+<head>
+
+    <style>
+        #map {
+            height: 720px;
+            width: 80%;
+        }
+    </style>
+
+    <script>
+            var exports = {};
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.css">
+    <script src="https://unpkg.com/leaflet-drift-marker@1.0.3/lib/DriftMarker/Drift_Marker.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+</head>
+
+<body>
+    <div id="map"></div>
+</body>
+
+<script>
+    // Creating map options (устанавливает опции карты map : вид на заданное место и масштаб)
+    var mapOptions = {
+        center: [45.698175, 28.6018244],
+        zoom: 5,
+        attributionControl: false
+    }
+    // Creating a map object (создает новый объект карта map)
+    var map = new L.map('map', mapOptions);
+
+    // Creating a Layer object (создает новый слой объекта)
+    //var layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+
+    var layer = L.tileLayer(
+        'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+    // Attribution options
+    var attrOptions = {
+        prefix: 'BH 36-84 EC'
+    };
+
+    //route = L.Routing.control({
+    //  waypoints: [
+    //  L.latLng(45.7140116,28.6039066),
+    //  L.latLng(45.6986399,28.60301),
+    //  L.latLng(45.701595,28.6034566),
+    //  L.latLng(45.7072783,28.6036433),
+    //  L.latLng(45.7140116,28.6039066),
+    //   L.latLng(45.7200716,28.6069366)
+    //            ]
+    //});
+    // route.addTo(map);
+
+
+    // Запоминает маршрут, который был создан как выше :
+    var markerRoud = new Drift_Marker([45.698175, 28.6018244], {
+        options: {
+            route:
+                L.Routing.control({
+                    waypointMode: 'snap',
+                    waypoints: [
+                        L.latLng(45.698175, 28.6018244),
+                        L.latLng(45.7140116, 28.6039066),
+                        L.latLng(45.6986399, 28.60301),
+                        L.latLng(45.701595, 28.6034566),
+                        L.latLng(45.7072783, 28.6036433),
+                        L.latLng(45.7140116, 28.6039066),
+                        L.latLng(45.7200716, 28.6069366)
+                    ]
+                })
+        }
+    });
+
+    markerRoud.options.options.route.addTo(map); // и воспроизводит сохраненный маршрут
+
+    // Adding layer to the map ( добавляет слой на карту)
+    map.addLayer(layer);
+
+
+    var marker1 = new Drift_Marker([45.698175, 28.6018244], {
+        draggable: true, riseOnHover: true
+    }).addTo(map).bindPopup("S.Telepun auto").openPopup();
+
+
+    // Script for adding marker on map click
+
+    function onMapClick(e) {
+        marker1.slideTo(e.latlng, {
+            duration: 5000
+        });
+    };
+
+    map.on('click', onMapClick);
+    marker1.slideTo([45.7200716, 28.6069366], { animate: true, duration: 4000 });
+
+</script>

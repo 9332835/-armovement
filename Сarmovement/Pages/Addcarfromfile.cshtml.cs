@@ -29,6 +29,7 @@ namespace Сarmovement.Pages
         public void OnGet()
         {
         }
+
         public async Task<IActionResult> OnPostUploadAsync()
         {
             using (var memoryStream = new MemoryStream())
@@ -42,6 +43,11 @@ namespace Сarmovement.Pages
                     {
                         //  ВН 36-84 ЕС,45.698175,28.6018233,2022-01-19 04:39:45.419735 +00:00
                         var data = line.Split(",");
+                        if (data.Length != 4)
+                        {
+                            // return NotFound();
+                            ModelState.AddModelError(string.Empty, "Your file not good!");
+                        }
                         if (data.Length == 4)
                         {
                             Car car = new Car();
@@ -52,8 +58,10 @@ namespace Сarmovement.Pages
                             car.Time = DateTime.Parse(data[3]);
                             _dbContext.Cars.Add(car);
                         }
+                        
 
                     }
+
                     await _dbContext.SaveChangesAsync();
                 }
                

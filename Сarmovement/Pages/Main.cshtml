@@ -3,7 +3,6 @@
 @{
     ViewData["Title"] = "Main page";
 }
-івдлповлд
 @section links
 {
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
@@ -38,8 +37,9 @@
         var layer = new L.tileLayer(
             'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
 
+        // установка картинки авто с FontAwesome
         const fontAwesomeIcon = L.divIcon({
-            html: '<i class="fas fa-car"></i>',
+            html: '<i class="fas fa-car fa-2x"></i>',
             iconSize: [20, 20],
             className: 'myDivIcon'
         });
@@ -52,14 +52,17 @@
         //    icon: new L.Icon({
         //        iconUrl: 'C:/Users/User/Desktop/car.png',
         //        iconSize: [20, 20], iconAnchor: [15, 20]
-        //    }) 
+        //    })
+
+
+         // устанавливает маркер на карту
         L.marker([data[0].latitude, data[0].longitude], {
             clickable: false,
             icon: fontAwesomeIcon
 
         }).addTo(map);
 
-      
+       // устанавливает точки на карту
         for (var i = 0; i < data.length; i++) 
             marker = new L.marker([data[i].latitude, data[i].longitude])
         .addTo(map);
@@ -76,6 +79,7 @@
         //        L.latLng(45.7200716, 28.6069366)
         //    ]
 
+        // проводит маршрут на карте
         for (var i = 0; i < data.length - 1; i++)
         L.Routing.control({
             waypoints: [

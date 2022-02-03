@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Сarmovement.Pages
 {
-    public class ListofcarsModel : PageModel
+    public class TryModel : PageModel
     {
         public void OnGet()
         {
